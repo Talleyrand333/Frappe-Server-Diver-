@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include talleyapp1 *.css
+recursive-include talleyapp1 *.csv
+recursive-include talleyapp1 *.html
+recursive-include talleyapp1 *.ico
+recursive-include talleyapp1 *.js
+recursive-include talleyapp1 *.json
+recursive-include talleyapp1 *.md
+recursive-include talleyapp1 *.png
+recursive-include talleyapp1 *.py
+recursive-include talleyapp1 *.svg
+recursive-include talleyapp1 *.txt
+recursive-exclude talleyapp1 *.pyc
