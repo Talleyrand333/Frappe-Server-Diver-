@@ -228,7 +228,7 @@ def login(username: str = None, password: str = None) -> dict:
         }
     """
     
-    frappe.log_error(title= "START SUCCESSFUL",message = "TEST CONTENT")
+    
     if not username:
         return create_response(400, "Username is required!",None)
     
@@ -262,7 +262,7 @@ def login(username: str = None, password: str = None) -> dict:
         )
 
         if auth_api_response.status_code == 200:
-            frappe.log_error(title= "LOGIN SUCCESSFUL PENDING RETURN",message = "TEST CONTENT")
+            
             
             #Get Number of sites,servers for user
             user_server_details = get_sites_servers(username)

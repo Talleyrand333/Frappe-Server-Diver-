@@ -11,50 +11,79 @@ import psutil
 
 
 class Server(Document):
+    def validate(self):
+        if self.is_new():
+            server_data = self.fetch_server_metrics()
+            self.update(server_data)
+            
     def fetch_server_cpu_metrics(self):
         """
             Fetch Some CPU Metrics linked to the server
         
         """
         import paramiko
-
+        
+    
     def fetch_server_metrics(self):
         try:
             # Create SSH client
+            logged_in = False
             self.login_to_server()
+            logged_in = True
+            # Use shell commands for memory and swap info
+            stdin, stdout, stderr = self.client.exec_command("free -b")
+            memory_info_output = stdout.read().decode().strip().splitlines()[1:]
 
-            # Execute commands to fetch CPU-related information
-            cpu_usage_command = "top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\([0-9.]*\)%* id.*/\1/' | awk '{print 100 - $1}'"
-            cpu_load_average_command = "cat /proc/loadavg | awk '{print $1,$2,$3}'"
-            interrupt_rate_command = "cat /proc/stat | grep 'intr'"
+            # Parse memory info
+            mem_tag,total_mem, used_mem, free_mem,shared, buffers, available = memory_info_output[0].split()
 
-            stdin, stdout, stderr = self.client.exec_command(cpu_usage_command)
-            cpu_usage = stdout.read().decode().strip()
+            # Swap space info
+            stdin, stdout, stderr = self.client.exec_command("swapon -s")
+            swap_info_output = stdout.read().decode().strip().splitlines()
 
-            stdin, stdout, stderr = self.client.exec_command(cpu_load_average_command)
-            cpu_load_average = stdout.read().decode().strip()
+            swap_usage = None  # Initialize swap usage
 
-            stdin, stdout, stderr = self.client.exec_command(interrupt_rate_command)
-            interrupt_rate = stdout.read().decode().strip()
+            if len(swap_info_output) > 1:  # Check if swap is enabled
+                swap_info = swap_info_output[1].split()
+                swap_total = swap_info[2]
+                swap_used = swap_info[3]
+                swap_free = swap_info[4]
+
+                # Calculate swap usage percentage
+                swap_usage = float(swap_used) / float(swap_total) * 100
+
+            # Use psutil for CPU usage
             psutil_cpu_usage = psutil.cpu_percent()
-            psutil_memory_usage = psutil.virtual_memory().percent  
-            # Close the SSH connection
+
+            # CPU load average
+            cpu_load_average = psutil.getloadavg()[0]  # Get 1-minute load average
+
+            # Interrupt rate
+            stdin, stdout, stderr = self.client.exec_command("cat /proc/stat | grep 'intr'")
+            interrupt_rate = stdout.read().decode().strip()
+
+            # Close SSH connection
             self.client.close()
-
+            total_mem =  int(total_mem) / (1024**3) # Convert to GB
+            free_mem = int(free_mem) / (1024**3)
+            used_memory = int(used_mem) / (1024**3),
             return {
-                "cpu_usage": cpu_usage,
+                "cpu_usage_percent": psutil_cpu_usage,
                 "cpu_load_average": cpu_load_average,
-                "interrupt_rate": interrupt_rate,
-                'psutil_cpu':psutil_cpu_usage,
-                'psutil_mem':psutil_memory_usage
+                "total_memory": total_mem,  
+                "free_memory": free_mem,
+                "used_memory":used_memory,
+                "memory_utilization":(free_mem/total_mem)*100,
+                "buffer_cache": int(buffers) / (1024**3),
+                "available": int(available) / (1024**3),
+                "swap_usage": swap_usage,
             }
-        except paramiko.AuthenticationException:
-            return "Authentication failed. Please check your username and password."
-        except paramiko.SSHException as e:
-            return f"SSH error: {e}"
-        except Exception as e:
-            return f"Error: {e}"
-
+            # ... (error handling)
+        except:
+            if logged_in:
+                self.client.close()
+            frappe.log_error(title= "Error Fetching Server Data",message = frappe.get_traceback())
+        
        
 
     def validate_server_ip(self):
