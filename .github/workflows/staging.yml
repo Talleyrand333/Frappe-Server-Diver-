@@ -20,7 +20,7 @@ jobs:
       with:
         host: ${{ secrets.STAGING_HOST }}
         username: ${{ secrets.USERNAME }}
-        pass: ${{ secrets.STAGING_KEY }}
+        password: ${{ secrets.STAGING_KEY }}
         port: 22
         script: |
           cd /home/frappe/frappe-bench/apps/one_fm # we move into our app's folder
