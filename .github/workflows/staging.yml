@@ -24,11 +24,11 @@ jobs:
         port: 22
         script: |
           cd /home/talleyrand/frappe-bench/apps/site_monitor # we move into our app's folder
-          # git pull upstream staging # we pull any changes from git
-          git checkout staging
-          git pull upstream staging
+          # git pull origin staging # we pull any changes from git
+          git checkout -b staging
+          git pull origin staging
           
-          pip3 install --upgrade frappe-bench
+          
           cd /home/talleyrand/frappe-bench
           bench setup requirements site_monitor
           bench migrate # sync database
