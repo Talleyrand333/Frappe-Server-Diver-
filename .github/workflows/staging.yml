@@ -23,10 +23,11 @@ jobs:
         password: ${{ secrets.STAGING_KEY }}
         port: 22
         script: |
-          cd /home/frappe/frappe-bench/apps/one_fm # we move into our app's folder
+          cd /home/frappe/frappe-bench/apps/site_monitor # we move into our app's folder
           # git pull upstream staging # we pull any changes from git
-          git pull
-          cd /home/frappe          
+          git checkout staging
+          git pull upstream staging
+          cd /home/talleyrand          
           pip3 install --upgrade frappe-bench
           cd /home/talleyrand/frappe-bench
           bench setup requirements site_monitor
