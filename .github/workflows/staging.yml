@@ -3,8 +3,7 @@ name: Deploy CI/CD to Staging
 
 on:
   pull_request: # tells github to run this on any push to the repository
-    branches:
-      - staging
+    branches: [staging]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,7 +20,7 @@ jobs:
       with:
         host: ${{ secrets.STAGING_HOST }}
         username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.STAGING_KEY }}
+        password: ${{ secrets.STAGING_KEY }}
         port: 22
         script: |
           cd /home/frappe/frappe-bench/apps/one_fm # we move into our app's folder
@@ -29,7 +28,7 @@ jobs:
           git pull
           cd /home/frappe          
           pip3 install --upgrade frappe-bench
-          cd /home/frappe/frappe-bench
+          cd /home/talleyrand/frappe-bench
           bench setup requirements site_monitor
           bench migrate # sync database
           bench restart #${{secrets.PASSKEY}}
