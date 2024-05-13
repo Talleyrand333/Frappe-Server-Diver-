@@ -68,22 +68,22 @@ jobs:
         bench get-app hrms https://github.com/frappe/hrms --branch version-15
         bench get-app lending https://github.com/frappe/lending --branch version-15
         bench get-app payments https://github.com/frappe/payments --branch version-15
-        bench get-app  https://github.com/ONE-F-M/one_fm.git --branch version-15
+        bench get-app  https://github.com/ONE-F-M/one_fm.git --branch 187567795
     - name: create bench site
       working-directory: /home/runner/frappe-bench
-      run: bench new-site --mariadb-root-password root --admin-password admin frappe.local
+      run: bench new-site --mariadb-root-password root --admin-password admin frappe.test
     - name: install apps
       working-directory: /home/runner/frappe-bench
-      run: bench --site frappe.local install-app  erpnext  helpdesk hrms lending payments one_fm
+      run: bench --site frappe.test install-app  erpnext  helpdesk hrms lending payments one_fm
     - name: setup requirements
       working-directory: /home/runner/frappe-bench
       run: bench setup requirements --dev
     - name: allow tests
       working-directory: /home/runner/frappe-bench
-      run: bench --site frappe.local set-config allow_tests true
+      run: bench --site frappe.test set-config allow_tests true
     - name: bench build
       working-directory: /home/runner/frappe-bench
-      run: bench --site frappe.local build
+      run: bench --site frappe.test build
     - name: run tests
       working-directory: /home/runner/frappe-bench
-      run: bench --site frappe.local run-tests --app one_fm  # Test all installed apps
+      run: bench --site frappe.test run-tests --app one_fm  # Test all installed apps
