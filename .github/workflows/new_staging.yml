@@ -60,7 +60,7 @@ jobs:
     - name: add apps to bench
       working-directory: /home/runner/frappe-bench
       run: |
-        bench get-app lms $GITHUB_WORKSPACE
+        
         # Add additional apps here
         bench get-app erpnext https://github.com/frappe/erpnext --branch version-15
         bench get-app helpdesk https://github.com/frappe/helpdesk --branch main
@@ -73,7 +73,7 @@ jobs:
       run: bench new-site --mariadb-root-password root --admin-password admin frappe.local
     - name: install apps
       working-directory: /home/runner/frappe-bench
-      run: bench --site frappe.local install-app  erpnext lms helpdesk hrms lending payments one_fm
+      run: bench --site frappe.local install-app  erpnext  helpdesk hrms lending payments one_fm
     - name: setup requirements
       working-directory: /home/runner/frappe-bench
       run: bench setup requirements --dev
