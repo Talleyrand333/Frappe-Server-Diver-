@@ -52,7 +52,8 @@ jobs:
         then
            (cd && tar xzf ~/bench-cache/bench.tgz)
         else
-          bench init ~/frappe-bench --skip-redis-config-generation --skip-assets --python "$(which python)"
+          bench init ~/frappe-bench --skip-redis-config-generation --skip-assets --frappe-branch version-15 --python "$(which python)"
+          
           mkdir -p ~/bench-cache
           (cd && tar czf ~/bench-cache/bench.tgz frappe-bench)
         fi
@@ -72,7 +73,7 @@ jobs:
       run: bench new-site --mariadb-root-password root --admin-password admin frappe.local
     - name: install apps
       working-directory: /home/runner/frappe-bench
-      run: bench --site frappe.local install-app lms erpnext helpdesk hrms lending payments one_fm
+      run: bench --site frappe.local install-app  erpnext lms helpdesk hrms lending payments one_fm
     - name: setup requirements
       working-directory: /home/runner/frappe-bench
       run: bench setup requirements --dev
