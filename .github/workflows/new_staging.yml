@@ -53,7 +53,8 @@ jobs:
            (cd && tar xzf ~/bench-cache/bench.tgz)
         else
           bench init ~/frappe-bench --skip-redis-config-generation --skip-assets --frappe-branch version-15 --python "$(which python)"
-          
+          mysql --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL character_set_server = 'utf8mb4'"
+          mysql --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL collation_server = 'utf8mb4_unicode_ci'"
           mkdir -p ~/bench-cache
           (cd && tar czf ~/bench-cache/bench.tgz frappe-bench)
         fi
