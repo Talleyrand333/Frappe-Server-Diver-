@@ -46,7 +46,7 @@ jobs:
       run: |
         pip3 install frappe-bench
         which bench
-    - name: bench init
+    - name: bench init -frappe-branch version-15 frappe-bench
       run: |
         if [ -d ~/bench-cache/bench.tgz ]
         then
@@ -65,7 +65,7 @@ jobs:
         bench get-app lending https://github.com/frappe/lending --branch version-15
         bench get-app payments https://github.com/frappe/payments --branch version-15
         bench get-app lms https://github.com/ONE-F-M/lms --branch version-15
-        bench get-app  https://github.com/ONE-F-M/one_fm.git --branch version-15
+        bench get-app one_fm https://github.com/ONE-F-M/one_fm.git --branch version-15
     - name: create bench site
       working-directory: /home/runner/frappe-bench
       run: bench new-site --mariadb-root-password root --admin-password admin frappe.local
