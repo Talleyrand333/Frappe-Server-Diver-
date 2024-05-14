@@ -83,4 +83,4 @@ jobs:
       run: bench --site frappe.test set-config allow_tests true
     - name: run tests
       working-directory: /home/runner/frappe-bench
-      run: bench --site frappe.test --verbose run-tests --app one_fm  # Test all installed apps
+      run: bench --site frappe.test --verbose run-tests --skip-test-records --app one_fm
