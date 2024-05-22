@@ -72,6 +72,9 @@ jobs:
     - name: create bench site
       working-directory: /home/runner/frappe-bench
       run: bench new-site --mariadb-root-password root --admin-password admin frappe.test
+    - name: Set Face-Reg 
+      working-directory: /home/runner/frappe-bench
+      run: bench --site frappe.test set-config face_recognition_service_url [${{secrets.FACE_REG_URL}}]
     - name: install apps
       working-directory: /home/runner/frappe-bench
       run: bench --site frappe.test install-app  erpnext  helpdesk hrms lending payments one_fm

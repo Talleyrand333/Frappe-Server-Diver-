@@ -6,7 +6,7 @@ import ssl
 import datetime
 
 test124= "HEADERS"
-
+inert_new_line  = "HELLO WORLD"
 
 def has_default_role(user):
     roles = frappe.get_roles(user)
