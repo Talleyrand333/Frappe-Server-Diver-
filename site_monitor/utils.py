@@ -5,9 +5,7 @@ import socket
 import ssl
 import datetime
 
-test124= "HEADERS"
-inert_new_line  = "HELLO WORLD"
-
+t =1111
 def has_default_role(user):
     roles = frappe.get_roles(user)
     default_role = frappe.get_value("General Settings",None,'base_role_for_user')

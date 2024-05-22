@@ -20,7 +20,7 @@ jobs:
         ports:
           - 12000:6379
       mariadb:
-        image: anandology/mariadb-utf8mb4:10.3
+        image: anandology/mariadb-utf8mb4:10.6
         ports:
           - 3306:3306
         env:
