@@ -20,7 +20,12 @@ jobs:
         ports:
           - 12000:6379
       mariadb:
-        image: anandology/mariadb-utf8mb4:10.6
+        image: docker.io/mariadb:10.6
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+            - --skip-character-set-client-handshake
+            - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 1
         ports:
           - 3306:3306
         env:
