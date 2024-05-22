@@ -68,7 +68,7 @@ jobs:
         bench get-app hrms https://github.com/frappe/hrms --branch version-15
         bench get-app lending https://github.com/frappe/lending --branch version-15
         bench get-app payments https://github.com/frappe/payments --branch version-15
-        bench get-app  https://github.com/ONE-F-M/one_fm.git --branch 187567795
+        bench get-app  https://github.com/ONE-F-M/one_fm.git --branch ${{ github.head_ref }}"
     - name: create bench site
       working-directory: /home/runner/frappe-bench
       run: bench new-site --mariadb-root-password root --admin-password admin frappe.test
